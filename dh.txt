@@ -1,0 +1,47 @@
+#Note, Included height from base to first joint as a = .200, then the offset aplha = .0755, a rough estimate for the distances between axes
+
+A1 =
+ 
+[ cos(t1), -cos(90)*sin(t1),  sin(90)*sin(t1), 0.2*cos(t1)]
+[ sin(t1),  cos(90)*cos(t1), -sin(90)*cos(t1), 0.2*sin(t1)]
+[       0,          sin(90),          cos(90),      0.0755]
+[       0,                0,                0,           1]
+
+A2 =
+ 
+[ cos(t2), -sin(t2), 0, 0.29*cos(t2)]
+[ sin(t2),  cos(t2), 0, 0.29*sin(t2)]
+[       0,        0, 1,            0]
+[       0,        0, 0,            1]
+ 
+ 
+A3 =
+ 
+[ cos(t3), -cos(90)*sin(t3),  sin(90)*sin(t3), 0.1233*cos(t3)]
+[ sin(t3),  cos(90)*cos(t3), -sin(90)*cos(t3), 0.1233*sin(t3)]
+[       0,          sin(90),          cos(90),              0]
+[       0,                0,                0,              1]
+ 
+ 
+A4 =
+ 
+[ cos(t4), -cos(60)*sin(t4),  sin(60)*sin(t4), 0.0741*cos(t4)]
+[ sin(t4),  cos(60)*cos(t4), -sin(60)*cos(t4), 0.0741*sin(t4)]
+[       0,          sin(60),          cos(60),        0.03705]
+[       0,                0,                0,              1]
+ 
+ 
+A5 =
+ 
+[ cos(t5), -cos(60)*sin(t5),  sin(60)*sin(t5), 0.0741*cos(t5)]
+[ sin(t5),  cos(60)*cos(t5), -sin(60)*cos(t5), 0.0741*sin(t5)]
+[       0,          sin(60),          cos(60),        0.03705]
+[       0,                0,                0,              1]
+ 
+ 
+A6 =
+ 
+[ cos(t6), -sin(t6), 0,    0]
+[ sin(t6),  cos(t6), 0,    0]
+[       0,        0, 1, 0.16]
+[       0,        0, 0,    1]
