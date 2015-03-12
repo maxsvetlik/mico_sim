@@ -1,11 +1,11 @@
-#Note, Included height from base to first joint as a = .200, then the offset aplha = .0755, a rough estimate for the distances between axes
+#Note, disregarded height from j1 (thus a constant z = .2 should be added to final z position), then the offset aplha = .0755, a rough estimate for the distances between axes
 
 A1 =
  
-[ cos(t1), -cos(90)*sin(t1),  sin(90)*sin(t1), 0.2*cos(t1)]
-[ sin(t1),  cos(90)*cos(t1), -sin(90)*cos(t1), 0.2*sin(t1)]
-[       0,          sin(90),          cos(90),      0.0755]
-[       0,                0,                0,           1]
+[ cos(t1), -cos(90)*sin(t1),  sin(90)*sin(t1),      0]
+[ sin(t1),  cos(90)*cos(t1), -sin(90)*cos(t1),      0]
+[       0,          sin(90),          cos(90), 0.0755]
+[       0,                0,                0,      1]
 
 A2 =
  
@@ -45,3 +45,5 @@ A6 =
 [ sin(t6),  cos(t6), 0,    0]
 [       0,        0, 1, 0.16]
 [       0,        0, 0,    1]
+
+
