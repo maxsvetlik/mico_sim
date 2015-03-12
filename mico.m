@@ -20,6 +20,7 @@ t6 = 0:0.1:2*pi;
 %t4 = 0;
 %t5 = 0;
 %t6 = 0;
+THETA_sample = [0,90,0,0,0,0];
 syms t1 t2 t3 t4 t5 t6
 %X = [0  + l2 .* cos(THETA1) .* cos(THETA2) + l3*sin(THETA3)]; 
 %Y = [l1 + l1 .* sin(THETA2)                + l3*cos(THETA3)];
@@ -66,27 +67,43 @@ x_s = T(1,4);
 y_s = T(2,4);
 z_s = T(3,4);
 
-x_g = -.002;
-y_g = .01;
-z_g = .3;
+%'target' EF position
+x_g = 1.902;
+y_g = 2.01;
+z_g = 1.3;
 
-x_diff = x_g - x;
-y_diff = y_g - y;
-z_diff = z_g - z;
-dx = (x_diff^2 + y_diff^2 + z_diff^2)^(.5);
-%V_T = reshape(T,1,16);
+%absolute difference in cart space
+dx = ((x_g - x)^2 + (y_g - y)^2 + (z_g - z)^2)^(.5);
+
+%load symbolic position equations - `prejacobian`
 V_T = [x_s, y_s, z_s];
+
+%find jacobian
 J = jacobian(V_T, [t1, t2, t3, t4, t5, t6]);
-J = subs(J,{t1, t2, t3, t4, t5, t6}, {0,90,0,0,0,0});
-%vpa(J, 5)
+J = subs(J,{t1, t2, t3, t4, t5, t6}, THETA_sample);
+vpa(J, 5);
+
+%Calculate the pseudo inverse of jacobian
 J_trans = transpose(J);
-J_PI = J_trans*inv((J*J_trans))
+J_PI = J_trans*inv((J*J_trans));
+
+%calculate the error 
+I = eye([3,3]);
+%error = ABS((I - (J*J_PI))*dx);
+%vpa(error, 4);
 thetas = J_PI*dx;
+thetas = subs(thetas,{t1, t2, t3, t4, t5, t6}, THETA_sample);
 vpa(thetas, 4)
+
+%To get new THETA, add new to old : new thetas in 'thetas' as last column
+%reshape(THETA_sample,6,1) + thetas
+
 %J=subs(J,{t1,t2,t3,t4,t5,t6},{ones(3,1)},0);
-%rank(J)
 %simplify(J*inv(J))
 %inv(J)
+
+
+%Old graphing functionality
 %data1 = [X(:) Y(:) Z(:) THETA1(:)]; % create x-y-theta1 dataset
 %data2 = [X(:) Y(:) Z(:) THETA2(:)]; % create x-y-theta2 dataset
 %data3 = [X(:) Y(:) Z(:) THETA3(:)];
