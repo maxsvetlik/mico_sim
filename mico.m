@@ -20,16 +20,19 @@ t6 = 0:0.1:2*pi;
 %t4 = 0;
 %t5 = 0;
 %t6 = 0;
-THETA_sample = [0,90,0,0,0,0];
+%THETA_sample = [0,90,0,0,0,0];
+
+%THETA_sample = [260,254.779,102.3529,351.2045,34.9774,246.6818]
+THETA_sample = [240, 249,110,343.9,49.09,340.5];
 syms t1 t2 t3 t4 t5 t6
 %X = [0  + l2 .* cos(THETA1) .* cos(THETA2) + l3*sin(THETA3)]; 
 %Y = [l1 + l1 .* sin(THETA2)                + l3*cos(THETA3)];
 %Z = [0  + l1 .* sin(THETA1) .* cos(THETA2) + cos(THETA1)];
 
-A1 = [ cos(t1), -cos(90)*sin(t1),  sin(90)*sin(t1),0;
- sin(t1),  cos(90)*cos(t1), -sin(90)*cos(t1),      0;
-       0,          sin(90),          cos(90), 0.0755;
-       0,                0,                0,      1];
+A1 = [ cos(t1), -sin(t1), 0,      0;
+ sin(t1),  cos(t1), 0,      0;
+       0,        0, 1, 0.2755;
+       0,        0, 0,      1];
 
 A2 = [ cos(t2), -sin(t2), 0, 0.29*cos(t2);
      sin(t2),  cos(t2), 0, 0.29*sin(t2);
@@ -62,10 +65,16 @@ A6 =[ cos(t6), -sin(t6), 0,    0;
 %D-H translation matrix   
 T = A1 * A2 * A3 * A4 * A5 * A6;
 
+T = subs(T,{t1, t2, t3, t4, t5, t6}, THETA_sample);
 %cartesian position of EF
 x_s = T(1,4);
 y_s = T(2,4);
 z_s = T(3,4);
+vpa(x_s, 4)
+vpa(y_s, 4)
+vpa(z_s, 4)
+
+
 
 %'target' EF position
 x_g = 1.902;
@@ -73,7 +82,7 @@ y_g = 2.01;
 z_g = 1.3;
 
 %absolute difference in cart space
-dx = ((x_g - x)^2 + (y_g - y)^2 + (z_g - z)^2)^(.5);
+dx = ((x_g - x_s)^2 + (y_g - y_s)^2 + (z_g - z)^2)^(.5);
 
 %load symbolic position equations - `prejacobian`
 V_T = [x_s, y_s, z_s];
@@ -87,7 +96,7 @@ vpa(J, 5);
 J_trans = transpose(J);
 J_PI = J_trans*inv((J*J_trans));
 
-%calculate the error 
+%calculate the error
 I = eye([3,3]);
 %error = ABS((I - (J*J_PI))*dx);
 %vpa(error, 4);
