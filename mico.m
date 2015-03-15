@@ -20,59 +20,63 @@ t6 = 0:0.1:2*pi;
 %t4 = 0;
 %t5 = 0;
 %t6 = 0;
-%THETA_sample = [0,90,0,0,0,0];
+THETA_sample = [0,0,0,0,0,0];
 
-%THETA_sample = [260,254.779,102.3529,351.2045,34.9774,246.6818]
-THETA_sample = [240, 249,110,343.9,49.09,340.5];
+%THETA_sample = [260,254.779,102.3529,351.2045,34.9774,246.6818];
+%THETA_sample = [240, 249,110,343.9,49.09,340.5];
 syms t1 t2 t3 t4 t5 t6
 %X = [0  + l2 .* cos(THETA1) .* cos(THETA2) + l3*sin(THETA3)]; 
 %Y = [l1 + l1 .* sin(THETA2)                + l3*cos(THETA3)];
 %Z = [0  + l1 .* sin(THETA1) .* cos(THETA2) + cos(THETA1)];
 
-A1 = [ cos(t1), -sin(t1), 0,      0;
- sin(t1),  cos(t1), 0,      0;
-       0,        0, 1, 0.2755;
-       0,        0, 0,      1];
+A1 =[ cos(t1 + 180), -sin(t1 + 180)*cos(90),  sin(t1 + 180)*sin(90),      0;
+ sin(t1 + 180),  cos(t1 + 180)*cos(90), -cos(t1 + 180)*sin(90),      0;
+            0,                sin(90),                cos(90), 0.2755;
+             0,                      0,                      0,      1];
+ 
+ 
+A2 =[ cos(t2 + 180), -sin(t2 + 180)*cos(180),  sin(t2 + 180)*sin(180), 0.29*cos(t2 + 180.0);
+ sin(t2 + 180),  cos(t2 + 180)*cos(180), -cos(t2 + 180)*sin(180), 0.29*sin(t2 + 180.0);
+             0,                sin(180),                cos(180),                    0;
+             0,                       0,                       0,                    1];
+ 
+ 
+A3 =[ cos(t3 + 90), -sin(t3 + 90)*cos(90),  sin(t3 + 90)*sin(90), 0.1233*cos(t3 + 90.0);
+ sin(t3 + 90),  cos(t3 + 90)*cos(90), -cos(t3 + 90)*sin(90), 0.1233*sin(t3 + 90.0);
+            0,               sin(90),               cos(90),                     0;
+            0,                     0,                     0,                     1];
+ 
 
-A2 = [ cos(t2), -sin(t2), 0, 0.29*cos(t2);
-     sin(t2),  cos(t2), 0, 0.29*sin(t2);
-       0,        0, 1,            0;
-       0,        0, 0,            1];
-   
-A3 = [cos(t3), -cos(90)*sin(t3),  sin(90)*sin(t3), 0.1233*cos(t3);
- sin(t3),  cos(90)*cos(t3), -sin(90)*cos(t3), 0.1233*sin(t3);
-       0,          sin(90),          cos(90),              0;
-       0,                0,                0,              1];
+A4 =[ cos(t4 + 120), -sin(t4 + 120)*cos(60),  sin(t4 + 120)*sin(60), 0.0741*cos(t4 + 120.0);
+ sin(t4 + 120),  cos(t4 + 120)*cos(60), -cos(t4 + 120)*sin(60), 0.0741*sin(t4 + 120.0);
+             0,                sin(60),                cos(60),                 0.0617;
+             0,                      0,                      0,                      1];
  
  
-A4 = [ cos(t4), -cos(60)*sin(t4),  sin(60)*sin(t4), 0.0741*cos(t4);
- sin(t4),  cos(60)*cos(t4), -sin(60)*cos(t4), 0.0741*sin(t4);
-       0,          sin(60),          cos(60),        0.03705;
-       0,                0,                0,              1];
- 
- 
-A5 =[ cos(t5), -cos(60)*sin(t5),  sin(60)*sin(t5), 0.0741*cos(t5);
- sin(t5),  cos(60)*cos(t5), -sin(60)*cos(t5), 0.0741*sin(t5);
-       0,          sin(60),          cos(60),        0.03705;
-       0,                0,                0,              1];
+A5 =[ cos(t5 - 120), -sin(t5 - 120)*cos(60), -sin(t5 - 120)*sin(60), 0.0714*cos(t5 - 120.0);
+ sin(t5 - 120),  cos(t5 - 120)*cos(60),  cos(t5 - 120)*sin(60), 0.0714*sin(t5 - 120.0);
+             0,               -sin(60),                cos(60),                 0.0617;
+             0,                      0,                      0,                      1];
  
  
 A6 =[ cos(t6), -sin(t6), 0,    0;
  sin(t6),  cos(t6), 0,    0;
        0,        0, 1, 0.16;
        0,        0, 0,    1];
+ 
 
 %D-H translation matrix   
 T = A1 * A2 * A3 * A4 * A5 * A6;
 
 T = subs(T,{t1, t2, t3, t4, t5, t6}, THETA_sample);
+vpa(T, 4)
 %cartesian position of EF
 x_s = T(1,4);
 y_s = T(2,4);
 z_s = T(3,4);
-vpa(x_s, 4)
-vpa(y_s, 4)
-vpa(z_s, 4)
+vpa(x_s, 4);
+vpa(y_s, 4);
+vpa(z_s, 4);
 
 
 
