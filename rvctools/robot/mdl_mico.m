@@ -71,12 +71,18 @@ function r = mdl_mico()
     % angles.  "DH Algo" are the result after adding the joint angle offset.
 
     robot = SerialLink([
-        Revolute('alpha', pi/2,  'a', 0,  'd', D1,   'flip')
-        Revolute('alpha', pi,    'a', D2, 'd', 0,    'offset', -pi/2)
-        Revolute('alpha', pi/2,  'a', 0,  'd', -e2,  'offset', pi/2)
-        Revolute('alpha', 2*aa,  'a', 0,  'd', -d4b)
-        Revolute('alpha', 2*aa,  'a', 0,  'd', -d5b, 'offset', -pi)
-        Revolute('alpha', pi,    'a', 0,  'd', -d6b, 'offset', pi/2)
+        Revolute('alpha', pi/2,  'a', 0,  'd', D1,   'flip', ...
+        'qlim', [-360 360]*deg )
+        Revolute('alpha', pi,    'a', D2, 'd', 0,    'offset', -pi/2, ...
+        'qlim', [-310 310]*deg )
+        Revolute('alpha', pi/2,  'a', 0,  'd', -e2,  'offset', pi/2, ... 
+        'qlim', [-324 324]*deg )
+        Revolute('alpha', 2*aa,  'a', 0,  'd', -d4b, ...
+        'qlim', [-360 360]*deg )
+        Revolute('alpha', 2*aa,  'a', 0,  'd', -d5b, 'offset', -pi, ...
+        'qlim', [-360 360]*deg )
+        Revolute('alpha', pi,    'a', 0,  'd', -d6b, 'offset', pi/2, ...
+        'qlim', [-360 360]*deg )
         ], ...
         'name', 'Mico', 'manufacturer', 'Kinova');
     
