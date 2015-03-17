@@ -12,7 +12,7 @@ grab = [267.574, 218.327, 105.551, 197.795, 109.295, 79.431]*deg; %Grab pen posi
 grab_c = [.2577, -.401, .514];
 ground = [240.055, 249.816, 110.29412, 343.90, 49.091, 340.5]*deg; %EF in front of base, touching ground
 ground_c = [.14386,-0.36297,0.00080];
-
+grount_t = [.14386,-0.36297,0.00080,.98316,.181175,.01393];
 %Load model
 mdl_mico;
 
@@ -38,9 +38,6 @@ temp = TF(:,:,1);
 %    q = [q;curTHETA];
 %end
 
-%T_cur = mico.fkine(curTHETA)
-%mico.plot(q);
-
 %T1 = transl(.210209, -.2619, .4771);
 %T2 = transl(.2577, -.401, .514);
 %TF = ctraj(T1,T2,50);
@@ -48,6 +45,8 @@ temp = TF(:,:,1);
 q = mico.ikinem(T2,home,'qlimits','pweight',100,'stiffness',.2);
 asdf = mico.fkine(q)
 mico.plot(q)
-%qi = mico.ikine(T, home, 'ilimit', 5000, 'plot', 'alpha', .5, 'tol', 1e-6)
-%qi = mico.ikine3(T)
-%T_cur
+
+%Demonstrating desired cartesianal velocity -> required joint velocity
+J2 = mico.jacob0(home)
+vel_desired = [.2 .1 .2 .3 0 .004]
+inv(J2) * (vel_desired')
