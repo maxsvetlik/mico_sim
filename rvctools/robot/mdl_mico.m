@@ -41,6 +41,38 @@
 %
 % http://www.petercorke.com
 
+% Methods::
+%  A             link transform matrix
+%  RP            joint type: 'R' or 'P'
+%  friction      friction force
+%  nofriction    Link object with friction parameters set to zero
+%  dyn           display link dynamic parameters
+%  islimit       test if joint exceeds soft limit
+%  isrevolute    test if joint is revolute
+%  isprismatic   test if joint is prismatic
+%  display       print the link parameters in human readable form
+%  char          convert to string
+%
+% Properties (read/write)::
+%
+%  theta    kinematic: joint angle
+%  d        kinematic: link offset
+%  a        kinematic: link length
+%  alpha    kinematic: link twist
+%  sigma    kinematic: 0 if revolute, 1 if prismatic
+%  mdh      kinematic: 0 if standard D&H, else 1
+%  offset   kinematic: joint variable offset
+%  qlim     kinematic: joint variable limits [min max]
+%-
+%  m        dynamic: link mass
+%  r        dynamic: link COG wrt link coordinate frame 3x1
+%  I        dynamic: link inertia matrix, symmetric 3x3, about link COG.
+%  B        dynamic: link viscous friction (motor referred)
+%  Tc       dynamic: link Coulomb friction
+%-
+%  G        actuator: gear ratio
+%  Jm       actuator: motor inertia (motor referred)
+
 function r = mdl_mico()
     
     deg = pi/180;
@@ -72,17 +104,23 @@ function r = mdl_mico()
 
     robot = SerialLink([
         Revolute('alpha', pi/2,  'a', 0,  'd', D1,   'flip', ...
-        'qlim', [-360 360]*deg )
+        'qlim', [-360 360]*deg, ...
+	'm', 1.3958 )
         Revolute('alpha', pi,    'a', D2, 'd', 0,    'offset', -pi/2, ...
-        'qlim', [-310 310]*deg )
+        'qlim', [-310 310]*deg, ...
+	'm', 1.4377 )
         Revolute('alpha', pi/2,  'a', 0,  'd', -e2,  'offset', pi/2, ... 
-        'qlim', [-324 324]*deg )
+        'qlim', [-324 324]*deg, ...
+	'm', .956173 )
         Revolute('alpha', 2*aa,  'a', 0,  'd', -d4b, ...
-        'qlim', [-360 360]*deg )
+        'qlim', [-360 360]*deg, ... 
+	'm', .716173 )
         Revolute('alpha', 2*aa,  'a', 0,  'd', -d5b, 'offset', -pi, ...
-        'qlim', [-360 360]*deg )
+        'qlim', [-360 360]*deg, ...
+	'm', .716173 )
         Revolute('alpha', pi,    'a', 0,  'd', -d6b, 'offset', pi/2, ...
-        'qlim', [-360 360]*deg )
+        'qlim', [-360 360]*deg, ...
+	'm', .22187 )
         ], ...
         'name', 'Mico', 'manufacturer', 'Kinova');
     
