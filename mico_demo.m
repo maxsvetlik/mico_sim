@@ -17,7 +17,8 @@ grount_t = [.14386,-0.36297,0.00080,.98316,.181175,.01393];
 mdl_mico;
 
 %Move arm to pos
-T = mico.fkine(home);
+T = mico.fkine(home)
+J = mico.jacob0(home)
 curTHETA = home;
 cur_c = home_c;
 %setup transform
@@ -50,3 +51,6 @@ mico.plot(q)
 J2 = mico.jacob0(home)
 vel_desired = [.2 .1 .2 .3 0 .004]
 inv(J2) * (vel_desired')
+
+%Generate code
+%cGen = CodeGenerator(mico)
