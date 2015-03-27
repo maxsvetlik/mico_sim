@@ -152,6 +152,9 @@ function r = mdl_mico()
         assignin('base', 'qr', [270 180 180 0 0 180]*deg); % vertical pose as per Fig 2
         assignin('base', 'test',[260,254.779,102.3429,351.2045,34.9773,246.6818]*deg);
         assignin('base', 'test2',[240.055, 249.816, 110.29412, 343.90, 49.091, 340.5]*deg);
+        assignin('base', 'home', [274.85, 175.147, 78.915, 243.27, 83.9318, 75.136]*deg); %Kinova home position
+        assignin('base', 'writerdy', [262.113, 248.05, 128.54, 343.2272, 72.75, 149.25]*deg); %Write ready position from draw-demo
+        assignin('base', 'zerotau', [0, 180, 180, 0, 0, 180]*deg); %Balanced position, should equate to zero gravitational torques
     end
 end
 
