@@ -52,12 +52,32 @@ function theta = ikine3(robot, T, varargin)
         end
         return;
     end
+
+%MICO HACK
+    deg = pi/180;
+    D1 = 0.2755;
+    D2 = 0.2900;
+    D3 = 0.1233;
+    D4 = 0.0741;
+    D5 = 0.0741;
+    D6 = 0.1600;
+    e2 = 0.0070;
+    
+    % alternate parameters
+    aa = 30*deg;
+    ca = cos(aa);
+    sa = sin(aa);
+    c2a = cos(2*aa);
+    s2a = sin(2*aa);
+    d4b = D3 + sa/s2a*D4;
+%END MICO HACK
+
     L = robot.links;
     a2 = L(2).a;
     a3 = L(3).a;
 
     d3 = L(3).d;
-
+    d4 = d4b;
     if ~ishomog(T)
         error('T is not a homog xform');
     end
