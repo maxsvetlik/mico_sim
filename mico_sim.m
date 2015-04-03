@@ -1,4 +1,4 @@
-function [q_f1 qd_f1 qdd_f1 x_f1] = mico_sim(xd_t)
+function [q_f1, qd_f1, qdd_f1, x_f1, tau] = mico_sim(q_t, xd_t)
 global tsize deg q_0 kp first_run writerdy qdd_lim
 deg = pi/180;
 tsize = .07;
@@ -20,16 +20,12 @@ writerdy = evalin('base','writerdy');
 %end
 %pos_f
 %ts([0 0 0 0 0 1]');
-q_t1 = writerdy;
-mico.fkine(q_t1)
-xd_t = [0 0 -.05 0 0 0]';
-[q_f1, qd_t1, qdd_t1, tau] = ts(q_t1, xd_t);
+%q_t1 = writerdy;
+mico.fkine(q_t);
+%xd_t = [0 0 -.05 0 0 0]';
+[q_f1, qd_f1, qdd_f1, tau] = ts(q_t, xd_t);
 %x = input('Press Enter to continue');
-q_f1
 x_f1 = mico.fkine(q_f1);
-qd_t1
-qdd_t1
-tau
 end
 function [q_t1, qd_t1, qdd_t1, tau] = ts(q_t, xd_d)
     global mico home first_run q_0 tsize kp
@@ -40,6 +36,7 @@ function [q_t1, qd_t1, qdd_t1, tau] = ts(q_t, xd_d)
 %         first_run = 0;
 %     end
     mico.plot(q_t);
+    xd_d = xd_d';
     T6 = mico.fkine(q_t);
     d6 = tr2jac(T6) * (tsize*xd_d);
     temp = transl(d6(1)+T6(1,4),d6(2)+T6(2,4),-d6(3)+T6(3,4));
