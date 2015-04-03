@@ -10,10 +10,13 @@ function r = mdl_jaco()
     
     % robot length (meters)
     l = .2;
+    h = 1.2;
 
     robot = SerialLink([
-        Revolute('alpha', 0,  'a', 0,  'd', 0)
-        Revolute('alpha', pi/2,  'a', 0,  'd', l )
+        Revolute('alpha', pi/2,  'a', 0,  'd', h, ...
+	'qlim', [0 0]*deg )
+        Revolute('alpha', pi/2,  'a', l,  'd', 0, ...
+	'qlim', [-pi/4 pi/4] )
         ], ...
         'name', 'DoorHandle', 'manufacturer', 'MaxLabs');
 
