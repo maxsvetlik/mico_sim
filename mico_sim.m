@@ -1,4 +1,4 @@
-function [q_f1 qd_f] = mico_sim(q_t)
+function [q_f1 qd_f1 qdd_f1 x_f1] = mico_sim(xd_t)
 global tsize deg q_0 kp first_run writerdy qdd_lim
 deg = pi/180;
 tsize = .07;
@@ -22,15 +22,16 @@ writerdy = evalin('base','writerdy');
 %ts([0 0 0 0 0 1]');
 q_t1 = writerdy;
 mico.fkine(q_t1)
-%for i = 1:10
-while true
-asdf = [0 0 -.05 0 0 0]';
-[q_t1, xd_t1] = ts(q_t1, asdf);
+xd_t = [0 0 -.05 0 0 0]';
+[q_f1, qd_t1, qdd_t1, tau] = ts(q_t1, xd_t);
 %x = input('Press Enter to continue');
+q_f1
+x_f1 = mico.fkine(q_f1);
+qd_t1
+qdd_t1
+tau
 end
-mico.fkine(q_t1)
-end
-function [q_t1 xd_t1] = ts(q_t, xd_d)
+function [q_t1, qd_t1, qdd_t1, tau] = ts(q_t, xd_d)
     global mico home first_run q_0 tsize kp
     mico = evalin('base','mico');
 %    q_t = home;
@@ -48,11 +49,13 @@ function [q_t1 xd_t1] = ts(q_t, xd_d)
     qd_t = qd_t';
     %e = qd_t - qd_d; %P controller
     %[tau,q] = mico.fdyn(2, @controller, q_t, qd_t, qstar, kp, tsize);
-    tau = mico.rne(q_t, qd_t, kp*(qstar-q_t)); %singe integration,t = 1
+    qdd_t = kp*(qstar-q_t);
+    tau = mico.rne(q_t, qd_t, qdd_t); %singe integration,t = 1
     tau2 = mico.gravload(q_t);
     q_t1 = qstar;
     q_t = q_t1;
-    xd_t1 = xd_d;
+    qd_t1 = qd_t;
+    qdd_t1 = qdd_t;
     end
     function tau = controller(~, t, q_t, qd_t, qstar, P, tsize)
           qstar = q_t + (tsize * qd_t);
