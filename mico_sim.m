@@ -48,7 +48,8 @@ function [q_t1, qd_t1, qdd_t1, tau] = ts(q_t, xd_d)
     %[tau,q] = mico.fdyn(2, @controller, q_t, qd_t, qstar, kp, tsize);
     qdd_t = kp*(qstar-q_t);
     tau = mico.rne(q_t, qd_t, qdd_t); %singe integration,t = 1
-    tau2 = mico.gravload(q_t);
+    tau_grav = mico.gravload(q_t);
+    tau = tau - tau_grav;
     q_t1 = qstar;
     q_t = q_t1;
     qd_t1 = qd_t;
